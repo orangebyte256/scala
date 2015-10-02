@@ -1,0 +1,5 @@
+2 -1 0 common Test
+2 1 1 get test 2
+2 0 5 give test 3
+2 0 5 get -test3
+3 -1 100 common Толканка

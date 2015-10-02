@@ -1,0 +1,184 @@
+@import bills.Person
+@(me: Person)
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Justified Nav Template for Bootstrap</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bootstrap-select.css")'>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src='@routes.Assets.at("javascripts/bootstrap-select.js")'></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Общага</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="http:\\192.168.0.7:9000\login_">Logout</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><h3>Привет, @me.name_</h3></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    <hr>
+    <hr>
+
+    <div class="container">
+
+      <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+
+      <!-- Example row of columns -->
+      <div class="row">
+        @for(person <- me.room_.members_) {
+          @if(person != me) {
+            <div class="col-lg-4">
+              <h2 class = "names">@person.name_</h2>
+               @me.neighbors_.get(person).get match {
+                  case 0 => {<h1><span class="label label-info">@me.neighbors_.get(person)</span></h1>}
+                  case x if (x > 0) => {<h1><span class="label label-success">@me.neighbors_.get(person)</span></h1>}
+                  case _ => {<h1><span class="label label-danger">@me.neighbors_.get(person)</span></h1>}
+              } 
+              <input class="values" type="hidden" name="name" value="@person.id_">
+            </div>
+          }
+        }
+      </div>
+  
+
+  <form class="form-horizontal" action="http:\\192.168.0.7:9000\addevent" method="get">
+    <div class="form-group form-group-lg">
+      <h2>
+      <span class="label label-info">Кому: </span>
+      <span class="label label-info" id = "toname"></span>
+      </h2>
+    </div>
+    <div class="form-group form-group-lg">
+      <input id="hide" type="text" style="display:none;" name = "subject">
+      <input type="text" style="float:left;" class="col-lg-2 control-label" id="text" name = "message" placeholder="Сообщение">
+      <input type="text" style="float:left;" class="col-lg-2 control-label" id="sum" name = "sum" placeholder="Сумма">
+      <select id="scsd" class="selectpicker" name = "type">
+          <option value="get">Взял</option>
+          <option value="give">Дал</option>
+          <option value="common">Общая покупка</option>
+      </select>
+    <button type="submit" class="btn btn-primary">Ok</button>
+    </div>
+  </form>
+
+    <div class="container">
+    <table class="table">
+      <tbody>
+          @for(event <- me.room_.getMessages(me)) {
+            @if(event != "") {
+              <tr><td>@event</td></tr>
+            }
+          }
+      </tbody>
+    </table>
+  </div>
+
+
+      <!-- Site footer -->
+      <footer class="footer">
+        <center><p>&copy; OrangeByteInc 2015</p></center>
+      </footer>
+
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+    <script type="text/javascript">
+    var classname = document.getElementsByClassName("col-lg-4");
+
+    var selected = null;
+
+    var clear = function()
+    {
+        for(var i = 0; i < classname.length; i++)
+        {
+          classname[i].style.background = "white";
+        }
+        if(selected)
+          selected.style.background = "#33DD77";
+    };
+
+    var mouseOverFunc = function() {
+        if(selected)
+          selected.style.background = "#88FFCC";
+        this.style.background = "#33DD77";
+    };
+
+    var mouseLeaveFunc = function() {
+        clear();
+    };
+
+    var mouseClickFunc = function() {
+        if(selected == this)
+          selected = null;
+        else
+          selected = this;
+        if(selected)
+        {
+          document.getElementById("toname").innerHTML = selected.getElementsByClassName("names")[0].innerHTML;
+          document.getElementById("hide").value = selected.getElementsByClassName("values")[0].value
+        }
+        else
+        {
+          document.getElementById("toname").innerHTML = "";
+          document.getElementById("hide").value = -1;
+        }
+        clear();
+    };
+
+    for(var i=0;i<classname.length;i++){
+        classname[i].addEventListener('mouseover', mouseOverFunc, false);
+        classname[i].addEventListener('mouseleave', mouseLeaveFunc, false);
+        classname[i].addEventListener('click', mouseClickFunc, false);
+    }
+
+    </script>
+  
+  </body>
+</html>

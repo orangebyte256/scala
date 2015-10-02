@@ -1,0 +1,78 @@
+@(name: String)
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+  <link rel="stylesheet" href='@routes.Assets.at("stylesheets/signin.css")'>
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="assets/js/ie-emulation-modes-warning.js"></script>
+   <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bootstrap-select.css")'>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+      <form class="form-signin" action="http:\\192.168.0.7:9000\registerValidate" method="get">
+        @if(name == "reply") {
+          <h2 font-color="red" class="form-signin-heading">Username already exist</h2>
+        } else {
+          <h2 class="form-signin-heading">Please sign in</h2>
+        }
+        <select id="dormitory" class="form-control " onmouseover="changeSelect(0)" name="dormitory" required autofocus>
+          <option>Выберите номер общаги</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <select id="room" class="form-control " onmouseover="changeSelect(1)" data-live-search="true" name="room" required autofocus>
+          <option>Выберите номер комнаты</option>
+          @for(num <- 1 to 999) {
+            <option>@num</option>
+          }
+        </select>
+        <input type="text" id="inputName" class="form-control" name="name" placeholder="Имя">
+        <input type="text" id="inputUsername" class="form-control" name="username" placeholder="Username">
+        <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+      </form>
+
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript">
+    function changeSelect(val)
+    {
+      var name = ""
+      if(val == 0)
+        name = "dormitory";
+      else
+        name = "room";
+      document.getElementById(name).options[0].disabled = true;
+    }
+    </script>
+  </body>
+</html>
